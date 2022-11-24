@@ -32,13 +32,13 @@ function updateData(event) {
     if (event.target.name === 'email') {
       data.email = event.target.value;
       if (isData.message) {
-        data.message = x.message;
+        data.message = isData.message;
       }
     }
     if (event.target.name === 'message') {
       data.message = event.target.value;
       if (isData.email) {
-        data.email = x.email;
+        data.email = isData.email;
       }
     }
   }
