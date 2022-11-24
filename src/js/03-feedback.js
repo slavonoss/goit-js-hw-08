@@ -1,6 +1,7 @@
 import throttle from 'lodash.throttle';
 import '../css/03-feedback.css';
 import '../css/common.css';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const formEl = document.querySelector('.feedback-form');
 formEl.addEventListener('input', throttle(setInputToLocStorage, 500));
@@ -8,9 +9,19 @@ formEl.addEventListener('submit', onSubmitForm);
 
 const FORM_DATA_NAME = 'feedback-form-state';
 
-const data = { email: '', message: '' };
+let data = { email: '', message: '' };
 
 populateIntupFeilds(formEl);
+
+function updateData(event) {
+  if (event.target.name === 'email') {
+    data.email = event.target.value;
+  }
+  if (event.target.name === 'message') {
+    data.message = event.target.value;
+  }
+  return data;
+}
 
 function populateIntupFeilds(form) {
   if (localStorage.getItem(FORM_DATA_NAME)) {
@@ -26,17 +37,39 @@ function setInputToLocStorage(event) {
 }
 
 function updateData(event) {
-  if (event.target.name === 'email') {
-    data.email = event.target.value;
+  if (JSON.parse(localStorage.getItem(FORM_DATA_NAME))) {
+    const x = JSON.parse(localStorage.getItem(FORM_DATA_NAME));
+    if (event.target.name === 'email') {
+      data.email = event.target.value;
+      if (x.message) {
+        data.message = x.message;
+      }
+    }
+    if (event.target.name === 'message') {
+      data.message = event.target.value;
+      if (x.email) {
+        data.email = x.email;
+      }
+    }
   }
-  if (event.target.name === 'message') {
-    data.message = event.target.value;
-  }
+
   return data;
 }
 
 function onSubmitForm(event) {
   event.preventDefault();
+  if (
+    !event.currentTarget.elements.email.value ||
+    !event.currentTarget.elements.message.value
+  ) {
+    Notify.failure('Надо заполнить все поля', {
+      timeout: 2000,
+      showOnlyTheLastOne: true,
+      position: 'center-top',
+    });
+
+    return;
+  }
 
   console.log('form submitted with data: ', updateData(event));
 
