@@ -31,18 +31,14 @@ function setInputToLocStorage(event) {
 
 function updateData(event) {
   if (JSON.parse(localStorage.getItem(FORM_DATA_NAME))) {
-    const isData = JSON.parse(localStorage.getItem(FORM_DATA_NAME));
-    if (event.target.name === 'email') {
-      data.email = event.target.value;
-      if (isData.message) {
-        data.message = isData.message;
+    {
+      if (event.target.name === 'email') {
+        data.email = event.target.value;
       }
-    }
-    if (event.target.name === 'message') {
-      data.message = event.target.value;
-      if (isData.email) {
-        data.email = isData.email;
+      if (event.target.name === 'message') {
+        data.message = event.target.value;
       }
+      return data;
     }
   }
 
