@@ -64,4 +64,6 @@ function onSubmitForm(event) {
 
   event.currentTarget.reset();
   localStorage.removeItem(FORM_DATA_NAME);
+  data.email = '';
+  data.message = '';
 }
